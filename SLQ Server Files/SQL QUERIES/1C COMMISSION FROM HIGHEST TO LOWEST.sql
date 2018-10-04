@@ -1,0 +1,15 @@
+SELECT EmployeeFirstName, EmployeeLastName,EmployeeJobTitle,SUM((UnitPrice*OrderQuantity)*CommissionRate)
+AS 'TOTAL COMMISSION'
+FROM EMPLOYEE_T
+	join SALES_REPRESENTATIVE_T
+		ON EMPLOYEE_T.EmployeeID  = SALES_REPRESENTATIVE_T.EmployeeID
+	LEFT Join CUSTOMER_T
+		ON CUSTOMER_T.SalesRepID = SALES_REPRESENTATIVE_T.EmployeeID
+	LEFT JOIN ORDER_T
+		ON ORDER_T.CustomerID = CUSTOMER_T.CustomerID
+	LEFT join ORDER_LINE_T
+		ON ORDER_T.OrderID = ORDER_LINE_T.OrderID
+	LEFT join PRODUCT_T
+		ON PRODUCT_T.ProductID = ORDER_LINE_T.ProductID
+GROUP BY EmployeeFirstName, EmployeeLastName, EmployeeJobTitle
+ORDER BY [TOTAL COMMISSION] DESC;
